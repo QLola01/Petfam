@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Petfam | Safe space for rescued animals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#2d4a5b; --navy2:#3c6175; --ink:#2d4a5b; --muted:#6f8592;
+  --green:#6cc497; --green2:#a3dd98; --greenText:#5ab88a;
+  --coral:#f47d7d; --peach:#ffc6a8; --lime:#dfe88f; --yellow:#fbf3a8;
+  --cream:#fdf8ec; --card:#fbf7e6; --line:#ece4cc; --dot:#cdb2aa;
+  --r:28px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:100px}
+body{font-family:"Baloo 2",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#fdfaf1 0%,#fdf6df 45%,#fdf0c9 100%);-webkit-font-smoothing:antialiased;line-height:1.35}
+img,svg{display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.wrap{width:min(1280px,calc(100% - 9vw));margin:0 auto}
+.card{background:rgba(251,247,230,.85);border:1px solid #fff;border-radius:var(--r);box-shadow:0 8px 24px rgba(160,130,60,.10)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:30px;background:rgba(255,255,255,.7);box-shadow:0 2px 10px rgba(160,130,60,.12);font-size:16px;color:#4a5f6c}
+.h2{font-size:clamp(32px,4vw,48px);font-weight:800;line-height:1.05;letter-spacing:-.5px}
+.h2 em{font-style:normal;color:var(--green)}
+.lead{font-size:18px;color:var(--muted);max-width:560px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 34px;border-radius:40px;font-size:20px;font-weight:600;transition:transform .25s,box-shadow .25s,background .25s}
+.btn-green{background:linear-gradient(90deg,#6cc497,#a3dd98);color:#183c2a;box-shadow:0 8px 20px rgba(108,196,151,.35)}
+.btn-green:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(108,196,151,.45)}
+.btn-light{background:rgba(255,255,255,.8);box-shadow:0 6px 18px rgba(160,130,60,.14)}
+.btn-light:hover{background:#fff;transform:translateY(-2px)}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-navy:hover{background:#24404f;transform:translateY(-2px)}
+
+/* Nav */
+header{position:sticky;top:0;z-index:50;background:rgba(253,249,238,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 2px 14px rgba(160,130,60,.10)}
+.nav{height:84px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{display:flex;align-items:center;gap:4px;line-height:1}
+.logo svg{flex:0 0 auto;transition:transform .3s}
+.logo:hover svg{transform:rotate(-6deg) scale(1.05)}
+.logo b{font-size:30px;font-weight:800;color:var(--navy);letter-spacing:-.5px;padding-top:4px}
+.logo b span{color:var(--green)}
+.menu{display:flex;gap:40px;list-style:none}
+.menu a{font-size:19px;font-weight:600;color:var(--navy);position:relative}
+.menu a::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:3px;border-radius:3px;background:var(--green);transform:scaleX(0);transition:transform .25s}
+.menu a:hover::after{transform:scaleX(1)}
+.user{display:flex;align-items:center;gap:28px}
+.bell{position:relative;width:40px;height:40px;display:grid;place-items:center;border-radius:50%;transition:background .2s}
+.bell:hover{background:rgba(45,74,91,.08)}
+.bell i{position:absolute;top:6px;right:8px;width:9px;height:9px;border-radius:50%;background:var(--coral);border:2px solid #fdf9ee}
+.who{display:flex;align-items:center;gap:12px;font-weight:700;font-size:19px}
+.avatar{width:52px;height:52px;border-radius:50%;background:#111;display:grid;place-items:center;color:#2db4f0;font-weight:800;font-size:18px;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.burger{display:none;width:44px;height:44px;border-radius:50%;place-items:center}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:56px 0 48px}
+.hero h1{font-weight:800;line-height:.95;margin:18px 0 22px;letter-spacing:-1px}
+.hero h1 .a{font-size:clamp(48px,5.3vw,78px);background:linear-gradient(90deg,#6cc497,#7ccc95);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1 .b{font-size:clamp(24px,2.5vw,36px);color:var(--navy);margin-left:12px}
+.hero h1 .c{display:block;font-size:clamp(44px,5vw,72px);white-space:nowrap;color:var(--navy)}
+.hero p{font-size:19px;color:var(--navy);max-width:560px}
+.hero .ctas{display:flex;gap:28px;margin-top:34px;flex-wrap:wrap}
+
+.mapcard{position:relative;border-radius:34px;background:#fdf0d6;height:460px;overflow:hidden}
+.mapcard svg.map{position:absolute;inset:0;width:100%;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.select{position:absolute;top:30px;right:30px;z-index:6}
+.select button{display:flex;align-items:center;gap:6px;height:44px;padding:0 16px;border-radius:24px;background:#fff;font-size:18px;box-shadow:0 2px 10px rgba(160,130,60,.12)}
+.select ul{position:absolute;right:0;top:50px;min-width:200px;list-style:none;background:#fff;border-radius:16px;padding:6px;box-shadow:0 10px 30px rgba(0,0,0,.12);display:none}
+.select.open ul{display:block}
+.select li button{width:100%;justify-content:flex-start;height:38px;box-shadow:none;border-radius:10px;font-size:16px}
+.select li button:hover{background:#f6efe0}
+.zoom{position:absolute;right:30px;bottom:56px;display:flex;flex-direction:column;gap:16px;z-index:3}
+.zoom button{width:48px;height:48px;border-radius:50%;background:var(--navy);color:#fff;font-size:26px;display:grid;place-items:center;transition:transform .2s,background .2s}
+.zoom button:hover{transform:scale(1.08);background:#24404f}
+.pin{cursor:pointer}
+.pin path.body{transition:fill .25s}
+.pin .tag rect{transition:fill .25s}
+.pin.on path.body{fill:#d9555b}
+.pin.on .tag rect{fill:#fde1df}
+.pin.on .tag text{fill:#d9555b}
+.pin:hover{filter:drop-shadow(0 4px 6px rgba(0,0,0,.18))}
+.tip{position:absolute;z-index:2;width:200px;padding:10px 14px;border-radius:14px;background:rgba(255,248,244,.96);box-shadow:0 8px 24px rgba(0,0,0,.10);pointer-events:none;transition:opacity .25s,transform .25s,left .35s,top .35s;font-size:18px}
+.tip h4{font-weight:500;font-size:16px;color:#d9555b;margin-bottom:6px}
+.tip div{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
+.tip div+div{border-top:1px solid #f1dcd4}
+.tip span{display:flex;align-items:center;gap:8px;color:#4a5f6c}
+
+/* Stats */
+.divider{height:1px;background:#ece3cb;margin:24px 0 72px}
+.stats{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.18fr) minmax(0,1fr);gap:24px}
+.stat{padding:24px 20px 26px}
+.stat-h{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.stat-h h3{font-size:22px;font-weight:700;white-space:nowrap}
+.seeall{color:var(--green);font-size:18px;font-weight:500}
+.cap{display:grid;grid-template-columns:20px minmax(0,1fr) auto;align-items:center;gap:8px;column-gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.cap:last-child{border-bottom:0}
+.cap .dot{width:22px;height:22px;border-radius:50%}
+.cap b{font-size:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;display:block;line-height:1.1}
+.cap small{display:flex;flex-wrap:wrap;column-gap:12px;row-gap:0;color:var(--greenText);font-size:14px}
+.cap small span{white-space:nowrap}
+.bar{height:12px;border-radius:12px;background:#e8e6df;overflow:hidden}
+.cap .bar{grid-column:2/4;grid-row:2;height:10px}
+.cap .dot{grid-row:1/3}
+.bar i{display:block;height:100%;border-radius:12px;background:#a3dd98;width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.cap .n{font-size:18px;text-align:right;white-space:nowrap}
+.pills{display:flex;align-items:center;background:#fff;border-radius:20px;padding:4px 6px;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.pills select{border:0;background:transparent;font:500 13px "Baloo 2",system-ui,sans-serif;color:var(--navy);padding:2px 3px;outline:none;cursor:pointer}
+.pills select+select{border-left:1px solid #ddd}
+.ring{position:relative;width:250px;height:250px;margin:16px auto 22px}
+.ring svg{width:100%;height:100%}
+.ring .c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring .c b{font-size:36px;font-weight:600;line-height:1}
+.ring .c span{font-size:24px}
+.arc{transition:stroke-dashoffset 1.3s cubic-bezier(.4,0,.2,1)}
+.legend{display:flex;justify-content:space-between;align-items:center;font-size:16px;gap:8px}
+.legend span{display:flex;align-items:center;gap:10px}
+.legend i{width:30px;height:16px;border-radius:12px}
+.legend em{font-style:normal;margin-left:6px;color:var(--muted)}
+.legend hr{width:1px;height:34px;border:0;background:#bbb}
+.toggle{display:flex;background:#fff;border-radius:20px;padding:3px}
+.toggle button{padding:2px 10px;border-radius:16px;font-size:16px;transition:background .25s}
+.toggle button.on{background:#ffcfb0}
+.pets{display:flex;gap:16px;margin-bottom:24px}
+.pets div{text-align:center;font-size:20px;flex:1}
+.pets .ic{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;margin:0 auto 6px;transition:transform .3s}
+.pets div:hover .ic{transform:translateY(-4px) rotate(-4deg)}
+.big{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.big b{font-size:clamp(60px,6vw,88px);font-weight:800;line-height:.82;letter-spacing:-2px}
+.big p{font-size:20px;color:#4f7e93;margin-top:14px}
+.big p span{margin-left:22px}
+.bars{display:flex;align-items:flex-end;gap:7px;height:140px}
+.bars i{width:24px;border-radius:6px;transition:height .8s cubic-bezier(.4,0,.2,1)}
+
+/* Sections */
+section.s{padding:110px 0 0}
+.shead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+.shead .lead{margin-top:10px}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{height:44px;padding:0 20px;border-radius:30px;background:rgba(255,255,255,.75);font-size:17px;font-weight:600;display:inline-flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(160,130,60,.10);transition:background .25s,color .25s}
+.chip:hover{background:#fff}
+.chip.on{background:var(--navy);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.pet{padding:18px;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s,opacity .3s}
+.pet:hover{transform:translateY(-6px);box-shadow:0 16px 34px rgba(160,130,60,.18)}
+.pet .art::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,0) 35%);pointer-events:none}
+.pet.hide{display:none}
+.pet .art{position:relative;height:220px;border-radius:20px;margin-bottom:16px;background-size:cover;background-repeat:no-repeat;overflow:hidden;transition:background-size .5s}
+.pet .art .heart{position:absolute;z-index:1;top:12px;right:12px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.85);display:grid;place-items:center;transition:transform .2s}
+.pet .art .heart:hover{transform:scale(1.1)}
+.pet .art .heart.on svg{fill:var(--coral);stroke:var(--coral)}
+.pet .badge{position:absolute;z-index:1;left:12px;top:12px;padding:2px 12px;border-radius:20px;background:rgba(255,255,255,.85);font-size:14px;font-weight:600}
+.pet h3{font-size:26px;font-weight:700;line-height:1}
+.pet .meta{color:var(--muted);font-size:16px;margin:4px 0 10px}
+.pet .tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.pet .tags span{font-size:13px;padding:2px 10px;border-radius:12px;background:#eef6e6;color:#3f8a5f}
+.pet .foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pet .foot small{display:flex;align-items:center;gap:4px;color:var(--greenText);font-size:15px}
+.meet{height:40px;padding:0 18px;border-radius:24px;background:var(--navy);color:#fff;font-size:15px;font-weight:600;transition:background .2s}
+.meet:hover{background:var(--green);color:#183c2a}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;position:relative}
+
+.step{position:relative;padding:30px 26px;text-align:center;background:#fbf7e6}
+.step .num{position:relative;z-index:3;width:64px;height:64px;margin:-62px auto 18px;border-radius:50%;display:grid;place-items:center;font-size:26px;font-weight:800;border:5px solid #fdf7e4}
+.step .si{width:76px;height:76px;margin:0 auto 14px;border-radius:24px;display:grid;place-items:center}
+.step h3{font-size:24px;font-weight:700;margin-bottom:6px}
+.step p{color:var(--muted);font-size:17px}
+
+.donate{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:36px;align-items:stretch}
+.goal{padding:40px;background:linear-gradient(140deg,#2d4a5b,#3e6a7e);color:#fff;border:0;display:flex;flex-direction:column;gap:22px;position:relative;overflow:hidden}
+.goal .paw{position:absolute;right:-30px;bottom:-30px;opacity:.08}
+.goal h2{color:#fff}
+.goal h2 em{color:#a3dd98}
+.goal p{color:#c9dbe3;font-size:18px}
+.prog{height:18px;border-radius:12px;background:rgba(255,255,255,.15);overflow:hidden}
+.prog i{display:block;height:100%;width:0;border-radius:12px;background:linear-gradient(90deg,#6cc497,#dfe88f);transition:width 1.6s cubic-bezier(.4,0,.2,1)}
+.goal .nums{display:flex;justify-content:space-between;font-size:18px}
+.goal .nums b{font-size:34px;font-weight:800;color:#fff;display:block;line-height:1}
+.impact{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:auto}
+.impact div{background:rgba(255,255,255,.08);border-radius:18px;padding:14px;font-size:15px;color:#d7e6ec}
+.impact b{display:block;font-size:26px;color:#fff;font-weight:700}
+.give{padding:36px}
+.give h3{font-size:30px;font-weight:700;margin-bottom:4px}
+.give .sub{color:var(--muted);margin-bottom:22px;font-size:17px}
+.freq{display:inline-flex;background:#fff;border-radius:30px;padding:4px;margin-bottom:22px}
+.freq button{padding:8px 22px;border-radius:24px;font-size:17px;font-weight:600;transition:background .25s,color .25s}
+.freq button.on{background:var(--navy);color:#fff}
+.amts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.amts button{height:58px;border-radius:18px;background:#fff;font-size:22px;font-weight:700;border:2px solid transparent;transition:border-color .2s,background .2s}
+.amts button:hover{border-color:#cfe9da}
+.amts button.on{border-color:var(--green);background:#eef8f1}
+.custom{display:flex;align-items:center;gap:8px;height:56px;border-radius:18px;background:#fff;padding:0 18px;border:2px solid transparent;margin-bottom:18px}
+.custom:focus-within{border-color:var(--green)}
+.custom span{font-size:22px;font-weight:700;color:var(--muted)}
+.custom input{flex:1;border:0;outline:none;background:transparent;font:600 20px "Baloo 2",system-ui,sans-serif;color:var(--navy);min-width:0}
+.what{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:18px;background:#fff6dc;margin-bottom:22px;font-size:17px}
+.what .wi{flex:0 0 46px;height:46px;border-radius:50%;background:var(--yellow);display:grid;place-items:center}
+.give .btn{width:100%}
+.note{min-height:24px;margin-top:12px;text-align:center;color:#3f8a5f;font-size:16px}
+
+.stories{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.story{padding:30px;display:flex;flex-direction:column;gap:18px;transition:transform .3s}
+.story:hover{transform:translateY(-6px)}
+.story .q{font-size:19px;color:#3c5566}
+.story .q::before{content:"\201C";display:block;font-size:64px;line-height:.6;color:var(--green);margin-bottom:8px}
+.story .by{display:flex;align-items:center;gap:14px;margin-top:auto}
+.story .by .ic{width:56px;height:56px;border-radius:50%;flex:0 0 56px;background-size:cover;background-position:center;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.story .by b{display:block;font-size:19px}
+.story .by small{color:var(--muted);font-size:15px}
+.stars{display:flex;gap:2px}
+
+.cta{margin-top:110px;border-radius:36px;padding:56px;background:linear-gradient(110deg,#a3dd98,#6cc497);display:grid;grid-template-columns:1.3fr 1fr;gap:30px;align-items:center;position:relative;overflow:hidden}
+.cta h2{color:#183c2a}
+.cta p{color:#245a3c;font-size:19px;margin-top:12px;max-width:520px}
+.cta .ctas{display:flex;gap:16px;flex-wrap:wrap;justify-content:flex-end}
+.cta .blob{position:absolute;border-radius:50%;background:rgba(255,255,255,.18)}
+
+footer{margin-top:110px;background:var(--navy);color:#d6e3e9;padding:64px 0 32px}
+.fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.4fr;gap:40px}
+footer .logo b{color:#fff}
+footer .logo b span{color:#a3dd98}
+footer .logo svg{filter:none}
+footer h4{color:#fff;font-size:19px;margin-bottom:14px}
+footer ul{list-style:none;display:flex;flex-direction:column;gap:8px;font-size:17px}
+footer ul a:hover{color:#a3dd98}
+footer .about{font-size:17px;margin-top:14px;max-width:300px}
+.news{display:flex;gap:8px;margin-top:6px}
+.news input{flex:1;min-width:0;height:50px;border-radius:30px;border:0;padding:0 18px;font:17px "Baloo 2",system-ui,sans-serif;outline:none}
+.news button{height:50px;padding:0 22px;border-radius:30px;background:var(--green);color:#183c2a;font-weight:700;font-size:17px}
+.fbot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:1px solid rgba(255,255,255,.15);margin-top:48px;padding-top:24px;font-size:16px;color:#a9c0ca}
+.fbot div{display:flex;gap:20px}
+
+
+/* Shelters */
+.sgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.scard{padding:14px;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s}
+.scard:hover{transform:translateY(-6px);box-shadow:0 16px 34px rgba(160,130,60,.18)}
+.scard .main{position:relative;height:210px;border-radius:20px;background-size:cover;background-position:center;transition:background-image .3s}
+.scard .spec{position:absolute;left:12px;top:12px;padding:2px 12px;border-radius:20px;background:rgba(255,255,255,.9);font-size:14px;font-weight:600}
+.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0 14px}
+.thumbs button{height:54px;border-radius:12px;background-size:cover;background-position:center;border:2px solid transparent;opacity:.65;transition:opacity .2s,border-color .2s}
+.thumbs button:hover{opacity:1}
+.thumbs button.on{opacity:1;border-color:var(--green)}
+.scard h3{font-size:24px;font-weight:700;line-height:1.1}
+.scard .loc{display:flex;align-items:center;gap:4px;color:var(--greenText);font-size:15px;margin:2px 0 12px}
+.scard .facts{display:flex;justify-content:space-between;font-size:15px;color:var(--muted);margin-bottom:16px}
+.scard .facts b{display:block;font-size:20px;color:var(--navy)}
+.scard .view{margin-top:auto;height:44px;border-radius:24px;background:var(--navy);color:#fff;font-weight:600;font-size:16px;transition:background .2s,color .2s}
+.scard .view:hover{background:var(--green);color:#183c2a}
+.seeall{cursor:pointer}
+.seeall:hover{text-decoration:underline}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(30,45,55,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.modal.open{display:flex;animation:fadeIn .2s ease}
+.mbox{position:relative;width:min(900px,100%);max-height:calc(100vh - 40px);overflow:auto;background:#fdf8ec;border-radius:28px;padding:30px;box-shadow:0 30px 70px rgba(0,0,0,.25);animation:popIn .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes popIn{from{opacity:0;transform:translateY(20px) scale(.98)}to{opacity:1;transform:none}}
+.mclose{position:absolute;top:18px;right:18px;width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:transform .2s}
+.mclose:hover{transform:rotate(90deg)}
+.mbox h2{font-size:32px;font-weight:800;line-height:1.1;padding-right:50px}
+.mbox .msub{color:var(--muted);font-size:17px;margin:4px 0 20px}
+.mrow{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:20px;align-items:center;padding:14px;border-radius:22px;background:rgba(255,255,255,.7);margin-bottom:12px}
+.mrow .ph{height:110px;border-radius:16px;background-size:cover;background-position:center}
+.mrow h3{font-size:22px;font-weight:700;line-height:1.1}
+.mrow .loc{display:flex;flex-wrap:wrap;gap:4px 14px;color:var(--greenText);font-size:15px;margin:2px 0 10px}
+.mrow .loc span{display:flex;align-items:center;gap:4px}
+.mrow .bar{height:10px;margin-bottom:4px}
+.mrow small{color:var(--muted);font-size:14px}
+.mrow .side{text-align:right;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.mrow .side b{font-size:18px}
+.mbtn{height:42px;padding:0 20px;border-radius:24px;background:var(--navy);color:#fff;font-weight:600;font-size:15px;transition:background .2s,color .2s}
+.mbtn:hover{background:var(--green);color:#183c2a}
+.mbtn.light{background:#fff;color:var(--navy);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.mbtn.light:hover{background:#eef8f1}
+.dmain{height:340px;border-radius:22px;background-size:cover;background-position:center;margin-bottom:10px}
+.dthumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.dthumbs button{height:80px;border-radius:14px;background-size:cover;background-position:center;border:3px solid transparent;opacity:.7;transition:opacity .2s,border-color .2s}
+.dthumbs button.on,.dthumbs button:hover{opacity:1}
+.dthumbs button.on{border-color:var(--green)}
+.dfacts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 22px}
+.dfacts div{background:#fff;border-radius:16px;padding:12px 14px;font-size:14px;color:var(--muted)}
+.dfacts b{display:block;font-size:18px;color:var(--navy);font-weight:600}
+.dabout{font-size:17px;color:#3c5566}
+.dact{display:flex;gap:12px;flex-wrap:wrap}
+.mnote{min-height:22px;margin-top:10px;color:#3f8a5f;font-size:15px}
+body.lock{overflow:hidden}
+
+/* FAQ */
+.faqwrap{max-width:860px;margin:0 auto}
+.fq{border-radius:22px;margin-bottom:12px;padding:0 24px;transition:background .25s}
+.fq.open{background:#fff}
+.fq button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0;text-align:left;font-size:20px;font-weight:600}
+.fq .pm{flex:0 0 34px;height:34px;border-radius:50%;background:var(--yellow);display:grid;place-items:center;font-size:22px;transition:transform .3s,background .3s}
+.fq.open .pm{transform:rotate(45deg);background:var(--green2)}
+.fq .ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
+.fq.open .ans{grid-template-rows:1fr}
+.fq .ans>div{overflow:hidden}
+.fq .ans p{color:var(--muted);font-size:17px;padding:0 50px 20px 0}
+
+@media (max-width:1240px){.sgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){
+  .sgrid{grid-template-columns:minmax(0,1fr)}
+  .mbox{padding:22px 16px;border-radius:22px}
+  .mbox h2{font-size:26px}
+  .mrow{grid-template-columns:minmax(0,1fr);gap:12px}
+  .mrow .ph{height:150px}
+  .mrow .side{flex-direction:row;justify-content:space-between;align-items:center}
+  .dmain{height:220px}
+  .dthumbs button{height:56px}
+  .dfacts{grid-template-columns:1fr 1fr}
+  .fq{padding:0 16px}.fq button{font-size:18px}.fq .ans p{padding-right:0}
+}
+
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+@media (max-width:1320px){
+  .menu{gap:28px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats .stat:last-child{grid-column:1/-1}
+  .grid{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:980px){
+  .hero{grid-template-columns:1fr;padding-top:36px}
+  .mapcard{height:420px}
+  .steps{grid-template-columns:1fr 1fr;row-gap:70px}
+  .steps::before{display:none}
+  .donate{grid-template-columns:minmax(0,1fr)}
+  .stories{grid-template-columns:1fr 1fr}
+  .cta{grid-template-columns:1fr}
+  .cta .ctas{justify-content:flex-start}
+  .fgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:820px){
+  .menu,.who span{display:none}
+  .burger{display:grid}
+  header.open .menu{display:flex;flex-direction:column;gap:0;position:absolute;left:0;right:0;top:84px;background:#fdf9ee;padding:8px 24px 16px;box-shadow:0 10px 20px rgba(0,0,0,.08)}
+  header.open .menu a{display:block;padding:12px 0}
+  .user{gap:10px}
+  .stats{grid-template-columns:minmax(0,1fr)}
+  .grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){
+  .wrap{width:calc(100% - 28px)}
+  .nav{height:72px}
+  header.open .menu{top:72px}
+  .avatar{width:44px;height:44px}
+  .hero h1 .b{display:block;margin:4px 0 0}
+  .hero h1 .c{white-space:normal}
+  .hero .ctas{gap:12px}
+  .hero .ctas .btn{flex:1;padding:0 16px;font-size:18px}
+  .mapcard{height:300px;border-radius:24px}
+  .select{top:14px;right:14px}.select button{height:38px;font-size:15px}
+  .zoom{right:14px;bottom:20px;gap:10px}.zoom button{width:40px;height:40px;font-size:22px}
+  .tip{width:170px;font-size:15px;padding:6px 10px}.tip h4{font-size:14px;margin-bottom:2px}.tip div{padding:2px 0}
+  .stat{padding:22px 18px}
+  .stat-h{flex-wrap:wrap}
+  .stat-h h3{font-size:24px}
+  .ring{width:230px;height:230px}
+  .legend{font-size:15px}
+  .pets{gap:10px;justify-content:space-between}
+  .pets .ic{width:90px;height:90px}
+  .pets .ic svg{width:60px;height:60px}
+  .bars{height:120px;gap:6px}.bars i{width:22px}
+  .big p{font-size:19px}
+  .stories,.steps{grid-template-columns:minmax(0,1fr)}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .pet{padding:10px;border-radius:22px}
+  .pet .art{height:120px;border-radius:16px;margin-bottom:10px}
+  .pet .art{height:140px}
+  .pet .art .heart{width:32px;height:32px;top:8px;right:8px}
+  .pet .badge{left:8px;top:8px;font-size:12px;padding:1px 8px}
+  .pet h3{font-size:20px}
+  .pet .meta{font-size:13px;margin:2px 0 8px}
+  .pet .tags{display:none}
+  .pet .foot{flex-direction:column;align-items:stretch;gap:8px}
+  .pet .foot small{font-size:13px}
+  .meet{height:36px;font-size:14px;padding:0 10px}
+  .goal,.give{padding:24px}
+  .impact{grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .impact b{font-size:20px}
+  .amts{grid-template-columns:1fr 1fr}
+  .cta{padding:32px 24px;border-radius:28px}
+  .cta .ctas .btn{flex:1}
+  .fgrid{grid-template-columns:minmax(0,1fr)}
+  .legend{flex-wrap:wrap;justify-content:center}.legend hr{display:none}
+  section.s{padding-top:80px}
+}
+@media (max-width:380px){
+  .pets .ic{width:72px;height:72px}.pets .ic svg{width:48px;height:48px}
+  .big{flex-wrap:wrap}
+  .bars{height:90px}.bars i{width:18px}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 10h16M8 18v2M16 18v2" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10C19.5 15.4 12 20 12 20z" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="dog" viewBox="0 0 100 100"><g fill="none" stroke="#2d4a5b" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M30 26c-9-4-19 2-20 14-1 10 4 20 10 22 4 1 6-3 6-8"/><path d="M70 26c9-4 19 2 20 14 1 10-4 20-10 22-4 1-6-3-6-8"/><path d="M28 30c6-8 38-8 44 0 6 9 6 34-2 46-8 11-32 11-40 0-8-12-8-37-2-46z" fill="#fff8c9"/><circle cx="40" cy="48" r="3.6" fill="#2d4a5b"/><circle cx="60" cy="48" r="3.6" fill="#2d4a5b"/><path d="M44 62c0-5 12-5 12 0 0 4-6 6-6 6s-6-2-6-6z" fill="#2d4a5b"/><path d="M50 68v5M43 74c4 4 10 4 14 0"/></g></symbol>
+    <symbol id="cat" viewBox="0 0 100 100"><g fill="none" stroke="#5b2d24" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 70c-6-14-4-30 2-40l-2-16 16 9c8-3 16-3 24 0l16-9-2 16c6 10 8 26 2 40-8 14-48 14-56 0z" fill="#ffd9c4"/><path d="M36 50c2-3 6-3 8 0M56 50c2-3 6-3 8 0"/><path d="M47 60h6l-3 3z" fill="#5b2d24"/><path d="M50 63c0 4-6 6-9 3M50 63c0 4 6 6 9 3"/><path d="M14 56l16 2M14 64l16-1M86 56l-16 2M86 64l-16-1"/></g></symbol>
+    <symbol id="bird" viewBox="0 0 100 100"><g fill="none" stroke="#3b5a2a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 80c10-4 18-10 24-18 8-11 16-22 30-30 4-6 10-9 16-6l6 4-7 3c0 8-4 16-12 22-10 8-24 14-40 14" fill="#eef5b8"/><circle cx="80" cy="27" r="2" fill="#3b5a2a"/><path d="M38 62c6 1 14 0 20-4M44 52c6 0 14-3 18-8M26 80l-6 6M34 77l-2 8"/></g></symbol>
+    <symbol id="rabbit" viewBox="0 0 100 100"><g fill="none" stroke="#4b3a6b" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M38 40c-6-12-8-28-2-30s10 14 10 28M62 40c6-12 8-28 2-30s-10 14-10 28"/><path d="M26 64c0-16 10-26 24-26s24 10 24 26c0 14-10 22-24 22s-24-8-24-22z" fill="#ece3fb"/><circle cx="41" cy="58" r="3.2" fill="#4b3a6b"/><circle cx="59" cy="58" r="3.2" fill="#4b3a6b"/><path d="M47 67h6l-3 3zM50 70v3M45 74c3 2 7 2 10 0"/></g></symbol>
+    <symbol id="paw" viewBox="0 0 100 100"><g fill="currentColor"><ellipse cx="50" cy="66" rx="22" ry="18"/><ellipse cx="24" cy="44" rx="9" ry="12"/><ellipse cx="40" cy="28" rx="9" ry="12"/><ellipse cx="60" cy="28" rx="9" ry="12"/><ellipse cx="76" cy="44" rx="9" ry="12"/></g></symbol>
+  </defs>
+</svg>
+
+<header id="top">
+  <div class="wrap nav">
+    <a href="#top" class="logo" aria-label="Petfam home"><svg width="46" height="46" viewBox="0 0 48 48" aria-hidden="true"><path d="M12 22.5V35a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3V22.5" fill="none" stroke="#2d4a5b" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 24.5 24 11l16 13.5" fill="none" stroke="#2d4a5b" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/><g fill="#2d4a5b"><ellipse cx="24" cy="31.3" rx="4.6" ry="3.8"/><ellipse cx="17.9" cy="26.6" rx="1.9" ry="2.4"/><ellipse cx="21.6" cy="23.6" rx="1.9" ry="2.5"/><ellipse cx="26.4" cy="23.6" rx="1.9" ry="2.5"/><ellipse cx="30.1" cy="26.6" rx="1.9" ry="2.4"/></g></svg><b>Pet<span>fam</span></b></a>
+    <ul class="menu" id="menu">
+      <li><a href="#shelters">Shelters</a></li>
+      <li><a href="#adopt">Adoptions</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#donate">Donations</a></li>
+      <li><a href="#faqs">FAQs</a></li>
+    </ul>
+    <div class="user">
+      <button class="bell" aria-label="Notifications"><svg width="30" height="30" viewBox="0 0 24 24" fill="#2d4a5b"><path d="M12 2.5a6 6 0 0 0-6 6v4.2L4.3 16a1 1 0 0 0 .9 1.5h13.6a1 1 0 0 0 .9-1.5L18 12.7V8.5a6 6 0 0 0-6-6z"/><path d="M9.5 19a2.5 2.5 0 0 0 5 0z"/></svg><i></i></button>
+      <a href="#" class="who" onclick="return false"><span class="avatar">JP</span><span>Jimmy Panda</span></a>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" stroke="#2d4a5b" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div>
+      <span class="eyebrow"><svg width="20" height="20"><use href="#i-pin"/></svg>Anywhere in USA</span>
+      <h1><span class="a">Safe Space</span><span class="b">for</span><span class="c">Rescued Animals</span></h1>
+      <p>At Pet Fam, we believe every paw deserves a loving home. We're a dedicated animal shelter committed to rescuing, rehabilitating, and rehoming pets in need.</p>
+      <div class="ctas">
+        <a href="#shelters" class="btn btn-green">Find a Shelter</a>
+        <a href="#donate" class="btn btn-light">Give Donations</a>
+      </div>
+    </div>
+    <div class="mapcard" id="mapcard">
+      <svg class="map" id="map" viewBox="0 0 700 460" preserveAspectRatio="xMidYMid meet" aria-label="Map of partner shelters"></svg>
+      <div class="tip" id="tip"><h4 id="tipName">Happy Tails</h4><div><span><svg width="20" height="20" style="color:#c2453f"><use href="#paw"/></svg>Pets</span><b id="tipPets">23</b></div><div><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2l3 6.6 7 .8-5.2 4.8 1.5 7L12 17.6 5.7 21.2l1.5-7L2 9.4l7-.8z" fill="#f39a3d"/></svg>Rating</span><b id="tipRate">4.5/5</b></div></div>
+      <div class="select" id="stateSel">
+        <button aria-haspopup="listbox" aria-expanded="false"><svg width="20" height="20"><use href="#i-pin"/></svg><span id="stateLbl">Select State</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></button>
+        <ul role="listbox"></ul>
+      </div>
+      <div class="zoom"><button id="zin" aria-label="Zoom in">+</button><button id="zout" aria-label="Zoom out">&minus;</button></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- STATS -->
+  <section class="stats">
+    <article class="card stat reveal">
+      <div class="stat-h"><h3>Shelter Capacity</h3><button class="seeall" id="seeAll" aria-haspopup="dialog">See all</button></div>
+      <div id="capList"></div>
+    </article>
+    <article class="card stat reveal">
+      <div class="stat-h"><h3>Adoption Stats</h3>
+        <div class="pills"><select id="ringShelter" aria-label="Select shelter"><option value="all">Select Shelter</option></select><select id="ringLoc" aria-label="Location"><option>Location</option><option>West</option><option>Midwest</option><option>East</option></select></div>
+      </div>
+      <div class="ring">
+        <svg viewBox="0 0 280 280">
+          <circle cx="140" cy="140" r="128" fill="none" stroke="#ffc6a8" stroke-width="7" stroke-linecap="round" class="arc" id="arcA" transform="translate(280 0) scale(-1 1) rotate(240 140 140)"/>
+          <circle cx="140" cy="140" r="110" fill="none" stroke="#f47d7d" stroke-width="9" stroke-linecap="round" class="arc" id="arcB" transform="rotate(-80 140 140)"/>
+          <circle id="dotA" r="13" fill="#ffc6a8"/>
+          <circle id="dotB" r="14" fill="#f47d7d"/>
+        </svg>
+        <div class="c"><b id="ringPct">82%</b><span>Case Index</span></div>
+      </div>
+      <div class="legend"><span><i style="background:#ffc6a8"></i><b>Adopted</b><em id="lgA">58%</em></span><hr><span><i style="background:#f47d7d"></i><b>Available</b><em id="lgB">42%</em></span></div>
+    </article>
+    <article class="card stat reveal">
+      <div class="stat-h"><h3>Pets Adoption</h3><div class="toggle" id="period"><button data-p="m">Monthly</button><button data-p="y" class="on">Yearly</button></div></div>
+      <div class="pets">
+        <div><span class="ic" style="background:#fbf3a8"><svg width="62" height="62"><use href="#dog"/></svg></span><span id="nDog">511</span></div>
+        <div><span class="ic" style="background:#ffc6a8"><svg width="62" height="62"><use href="#cat"/></svg></span><span id="nCat">487</span></div>
+        <div><span class="ic" style="background:#dfe88f"><svg width="62" height="62"><use href="#bird"/></svg></span><span id="nBird">379</span></div>
+      </div>
+      <div class="big">
+        <div><b id="total">1,377</b><p><span style="margin:0" id="growth">27.6%</span><span id="vs">vs 2024</span></p></div>
+        <div class="bars" id="bars"><i style="background:#8fb0bd"></i><i style="background:#cbdbe0"></i><i style="background:#2d5f6f"></i><i style="background:#a8bfc6"></i><i style="background:#4f8899"></i></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- SHELTERS -->
+  <section class="s" id="shelters">
+    <div class="shead reveal">
+      <div><span class="eyebrow">Our shelters</span><h2 class="h2" style="margin-top:14px">Visit a <em>shelter near you</em></h2></div>
+      <p class="lead">Four partner shelters across the USA, each with its own speciality. Tap a photo to look around.</p>
+    </div>
+    <div class="sgrid" id="shelterGrid"></div>
+  </section>
+
+  <!-- PETS -->
+  <section class="s" id="adopt">
+    <div class="shead reveal">
+      <div><span class="eyebrow">Adoptions</span><h2 class="h2" style="margin-top:14px">Meet your new <em>best friend</em></h2><p class="lead">Every pet here has been checked by a vet and is waiting for a family. Tap the heart to save a favourite.</p></div>
+      <div class="chips" id="filters">
+        <button class="chip on" data-f="all">All</button>
+        <button class="chip" data-f="dog">Dogs</button>
+        <button class="chip" data-f="cat">Cats</button>
+        <button class="chip" data-f="bird">Birds</button>
+        <button class="chip" data-f="rabbit">Small pets</button>
+      </div>
+    </div>
+    <div class="grid" id="petGrid"></div>
+  </section>
+
+  <!-- HOW -->
+  <section class="s" id="how">
+    <div class="shead reveal">
+      <div><span class="eyebrow">How it works</span><h2 class="h2" style="margin-top:14px">Adoption in <em>four easy steps</em></h2></div>
+      <p class="lead">We keep it simple and friendly, so you can focus on getting to know your new companion.</p>
+    </div>
+    <div class="steps" style="margin-top:70px">
+      <div class="card step reveal"><div class="num" style="background:#fbf3a8">1</div><div class="si" style="background:#fff8c9"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2d4a5b" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></div><h3>Browse pets</h3><p>Filter by type, age and shelter to find pets that suit your home.</p></div>
+      <div class="card step reveal"><div class="num" style="background:#ffc6a8">2</div><div class="si" style="background:#ffe6d8"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2d4a5b" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></div><h3>Apply online</h3><p>Fill in a short form about you and your home. It takes about ten minutes.</p></div>
+      <div class="card step reveal"><div class="num" style="background:#dfe88f">3</div><div class="si" style="background:#f0f5c8"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2d4a5b" stroke-width="1.8" stroke-linecap="round"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M3 19c0-3 2.5-5 5-5s5 2 5 5M11 19c0-3 2.5-5 5-5s5 2 5 5"/></svg></div><h3>Meet and greet</h3><p>Visit the shelter and spend time together before you decide.</p></div>
+      <div class="card step reveal"><div class="num" style="background:#a3dd98">4</div><div class="si" style="background:#e1f4dc"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2d4a5b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9H3z"/><path d="M12 18s-3-2-3-4a1.6 1.6 0 0 1 3-.8 1.6 1.6 0 0 1 3 .8c0 2-3 4-3 4z"/></svg></div><h3>Welcome home</h3><p>Take your new friend home, with follow up support from our team.</p></div>
+    </div>
+  </section>
+
+  <!-- DONATE -->
+  <section class="s" id="donate">
+    <div class="donate">
+      <div class="card goal reveal">
+        <svg class="paw" width="260" height="260" style="color:#fff"><use href="#paw"/></svg>
+        <span class="eyebrow" style="align-self:flex-start;background:rgba(255,255,255,.12);color:#fff;box-shadow:none">Donations</span>
+        <h2 class="h2">Every gift feeds a <em>wagging tail</em></h2>
+        <p>Your support pays for food, vaccines and warm beds while our pets wait for their forever homes.</p>
+        <div>
+          <div class="nums"><span><b id="raised">$0</b>raised this month</span><span style="text-align:right"><b>$25,000</b>goal</span></div>
+          <div class="prog" style="margin-top:14px"><i id="progBar"></i></div>
+        </div>
+        <div class="impact">
+          <div><b>1,240</b>meals served</div>
+          <div><b>312</b>vet visits</div>
+          <div><b>96</b>new beds</div>
+        </div>
+      </div>
+      <div class="card give reveal">
+        <h3>Make a donation</h3>
+        <p class="sub">Choose an amount. Every bit helps.</p>
+        <div class="freq" id="freq"><button class="on" data-f="once">One time</button><button data-f="monthly">Monthly</button></div>
+        <div class="amts" id="amts"><button data-a="10">$10</button><button data-a="25" class="on">$25</button><button data-a="50">$50</button><button data-a="100">$100</button></div>
+        <label class="custom"><span>$</span><input id="customAmt" type="number" min="1" placeholder="Other amount" aria-label="Other amount"></label>
+        <div class="what"><span class="wi"><svg width="26" height="26" style="color:#2d4a5b"><use href="#paw"/></svg></span><span id="whatTxt">$25 could feed a shelter dog for a week.</span></div>
+        <button class="btn btn-green" id="donateBtn">Donate $25</button>
+        <p class="note" id="donNote" role="status"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORIES -->
+  <section class="s" id="stories">
+    <div class="shead reveal">
+      <div><span class="eyebrow">Happy endings</span><h2 class="h2" style="margin-top:14px">Stories from <em>our families</em></h2></div>
+      <p class="lead">Thousands of pets have found homes through Petfam. Here are a few of their stories.</p>
+    </div>
+    <div class="stories">
+      <div class="card story reveal"><div class="stars" aria-label="5 stars"></div><p class="q">Biscuit was shy on day one. Three months later he steals the couch every night. The Paw Haven team made the whole process easy.</p><div class="by"><span class="ic" style="background-image:url(assets/pets/biscuit.jpg)"></span><span><b>Sarah and Biscuit</b><small>Adopted from Paw Haven</small></span></div></div>
+      <div class="card story reveal"><div class="stars" aria-label="5 stars"></div><p class="q">We came to look at kittens and left with Miso, a calm older cat. Best choice we ever made. She purrs like an engine.</p><div class="by"><span class="ic" style="background-image:url(assets/pets/miso.jpg)"></span><span><b>Emily and Miso</b><small>Adopted from Kindered</small></span></div></div>
+      <div class="card story reveal"><div class="stars" aria-label="5 stars"></div><p class="q">Kiwi sings every morning now. The staff at Lovables showed us how to set up her cage and checked in after a week.</p><div class="by"><span class="ic" style="background-image:url(assets/pets/kiwi.jpg);background-position:62% 30%"></span><span><b>Marcus and Kiwi</b><small>Adopted from Lovables</small></span></div></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="s" id="faqs">
+    <div class="shead reveal" style="justify-content:center;text-align:center">
+      <div><span class="eyebrow">FAQs</span><h2 class="h2" style="margin-top:14px">Questions <em>we often get</em></h2></div>
+    </div>
+    <div class="faqwrap" id="faqList">
+      <div class="card fq reveal"><button aria-expanded="false">How much does it cost to adopt?<span class="pm">+</span></button><div class="ans"><div><p>Fees range from $50 to $150 depending on the pet. This covers vaccines, microchipping and a vet check.</p></div></div></div>
+      <div class="card fq reveal"><button aria-expanded="false">How long does the adoption process take?<span class="pm">+</span></button><div class="ans"><div><p>Most adoptions are complete within one to two weeks, from your application to taking your pet home.</p></div></div></div>
+      <div class="card fq reveal"><button aria-expanded="false">Can I meet a pet before I apply?<span class="pm">+</span></button><div class="ans"><div><p>Yes. You can book a visit at any of our shelters to spend time with a pet before you decide.</p></div></div></div>
+      <div class="card fq reveal"><button aria-expanded="false">What if the pet does not settle in?<span class="pm">+</span></button><div class="ans"><div><p>Our team checks in after the first week and offers advice. If it truly does not work out, we will take the pet back.</p></div></div></div>
+      <div class="card fq reveal"><button aria-expanded="false">Is my donation tax deductible?<span class="pm">+</span></button><div class="ans"><div><p>Yes. Petfam is a registered nonprofit, and we email you a receipt for every donation.</p></div></div></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta reveal">
+    <span class="blob" style="width:260px;height:260px;right:-60px;top:-80px"></span>
+    <span class="blob" style="width:160px;height:160px;right:220px;bottom:-90px"></span>
+    <div style="position:relative">
+      <h2 class="h2">Can't adopt right now?<br>Foster or volunteer.</h2>
+      <p>Open your home for a few weeks, or give a few hours at a shelter near you. It makes a huge difference.</p>
+    </div>
+    <div class="ctas" style="position:relative">
+      <a href="#" class="btn btn-navy" onclick="return false">Become a Foster</a>
+      <a href="#" class="btn btn-light" onclick="return false">Volunteer</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <a href="#top" class="logo"><svg width="46" height="46" viewBox="0 0 48 48" aria-hidden="true"><path d="M12 22.5V35a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3V22.5" fill="none" stroke="#ffffff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 24.5 24 11l16 13.5" fill="none" stroke="#ffffff" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/><g fill="#ffffff"><ellipse cx="24" cy="31.3" rx="4.6" ry="3.8"/><ellipse cx="17.9" cy="26.6" rx="1.9" ry="2.4"/><ellipse cx="21.6" cy="23.6" rx="1.9" ry="2.5"/><ellipse cx="26.4" cy="23.6" rx="1.9" ry="2.5"/><ellipse cx="30.1" cy="26.6" rx="1.9" ry="2.4"/></g></svg><b>Pet<span>fam</span></b></a>
+        <p class="about">A safe space for rescued animals, connecting caring families with shelters across the USA.</p>
+      </div>
+      <div><h4>Explore</h4><ul><li><a href="#shelters">Shelters</a></li><li><a href="#adopt">Adoptions</a></li><li><a href="#how">How it works</a></li><li><a href="#donate">Donations</a></li><li><a href="#faqs">FAQs</a></li></ul></div>
+      <div><h4>Support</h4><ul><li><a href="#" onclick="return false">Help centre</a></li><li><a href="#" onclick="return false">Foster a pet</a></li><li><a href="#" onclick="return false">Volunteer</a></li><li><a href="#" onclick="return false">Contact us</a></li></ul></div>
+      <div><h4>Stay in the loop</h4><p style="font-size:17px;margin-bottom:10px">New pets and shelter news, once a month.</p>
+        <form class="news" id="newsForm" novalidate><input type="email" placeholder="Your email" aria-label="Email address"><button type="submit">Join</button></form>
+        <p id="newsNote" style="min-height:22px;margin-top:8px;color:#a3dd98;font-size:15px" role="status"></p>
+      </div>
+    </div>
+    <div class="fbot"><span>&copy; 2026 Petfam. All rights reserved.</span><div><a href="#" onclick="return false">Terms</a><a href="#" onclick="return false">Privacy</a></div></div>
+  </div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="mbox" id="mbox">
+    <button class="mclose" id="mclose" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" stroke="#2d4a5b" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div id="mbody"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NS='http://www.w3.org/2000/svg';
+
+  /* ---------- Data ---------- */
+  var shelters=[
+    {id:'paw',name:'Paw Haven',state:'Nevada',city:'Reno',lon:-118.5,lat:40.6,pets:25,cap:36,rate:'4.7/5',color:'#ffc6a8',ring:[82,58]},
+    {id:'happy',name:'Happy Tails',state:'South Dakota',city:'Pierre',lon:-102.2,lat:45.2,pets:23,cap:36,rate:'4.5/5',color:'#dfe88f',ring:[76,51]},
+    {id:'kin',name:'Kindered',state:'Oklahoma',city:'Tulsa',lon:-97.6,lat:35.6,pets:18,cap:36,rate:'4.6/5',color:'#f47d7d',ring:[88,64]},
+    {id:'lov',name:'Lovables',state:'Pennsylvania',city:'Scranton',lon:-77.8,lat:41.4,pets:14,cap:36,rate:'4.8/5',color:'#6cc497',ring:[71,47]}
+  ];
+
+  var extra={
+    paw:{spec:'Dogs',about:'A large dog sanctuary with shaded runs and play yards. Our team rehabilitates rescued strays and matches them with families.',hours:'Mon to Sat, 9am to 5pm',phone:'(775) 555 0142',addr:'1180 Meadow Rd, Reno, NV'},
+    happy:{spec:'Rabbits and birds',about:'A calm, small animal shelter for rabbits, parakeets and other small pets, with cosy indoor hutches and a garden run.',hours:'Tue to Sun, 10am to 4pm',phone:'(605) 555 0198',addr:'42 Prairie Ave, Pierre, SD'},
+    kin:{spec:'Cats',about:'A cat friendly shelter with indoor rooms, outdoor gardens and a nursery for mothers and kittens.',hours:'Mon to Sun, 10am to 6pm',phone:'(918) 555 0167',addr:'310 Elm St, Tulsa, OK'},
+    lov:{spec:'Birds',about:'An aviary shelter with outdoor bird houses and quiet indoor rooms for parrots, budgies and rescued wild birds.',hours:'Wed to Sun, 9am to 3pm',phone:'(570) 555 0123',addr:'88 Lakeview Dr, Scranton, PA'}
+  };
+  shelters.forEach(function(s){var e=extra[s.id];for(var k in e)s[k]=e[k];s.imgs=[1,2,3,4].map(function(i){return 'assets/shelters/'+s.id+'-'+i+'.jpg'})});
+
+  /* ---------- Dot map ---------- */
+  var us=[[-124.7,48.4],[-123,49],[-95.2,49],[-94.8,49.4],[-89.6,48],[-84.8,46.9],[-83.5,46.1],[-82.5,43],[-79,43.3],[-76.8,43.6],[-75,45],[-71.5,45],[-70,46.7],[-69.2,47.4],[-67.8,47.1],[-67,45],[-70.2,43.6],[-70.6,42],[-70,41.7],[-71.9,41.3],[-74,40.6],[-74,39.6],[-75.5,38.5],[-76,37],[-75.7,35.5],[-76.5,34.7],[-78.5,33.8],[-80.8,32],[-81.4,30.7],[-80.5,28.5],[-80,26.5],[-80.4,25.2],[-81.1,25.3],[-81.8,26.5],[-82.7,28],[-82.8,29.2],[-84,30],[-85.4,29.7],[-86.5,30.4],[-88.5,30.3],[-89.6,30.2],[-89.2,29.2],[-90.2,29.1],[-91.5,29.5],[-93.8,29.7],[-94.8,29.3],[-96.6,28.3],[-97.4,27.3],[-97.2,25.9],[-99.1,26.4],[-100.3,28.2],[-101.4,29.8],[-102.7,29.7],[-103.2,29],[-104.5,29.6],[-106.5,31.8],[-108.2,31.8],[-108.2,31.3],[-111.1,31.3],[-114.8,32.5],[-117.1,32.5],[-118.5,34],[-120.6,34.6],[-121.9,36.6],[-122.5,37.8],[-123.8,39.5],[-124.4,40.4],[-124.2,42],[-124.1,43.7],[-123.9,46.2]];
+  var X0=-126,X1=-66,Y0=50,Y1=24,W=700,H=460,padX=22,padY=86;
+  var sx=(W-2*padX)/(X1-X0), sy=(H-padY-36)/(Y0-Y1);
+  function proj(lon,lat){return [padX+(lon-X0)*sx, padY+(Y0-lat)*sy]}
+  var poly=us.map(function(p){return proj(p[0],p[1])});
+  function inside(pt,vs){var x=pt[0],y=pt[1],ins=false;for(var i=0,j=vs.length-1;i<vs.length;j=i++){var xi=vs[i][0],yi=vs[i][1],xj=vs[j][0],yj=vs[j][1];if(((yi>y)!=(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi))ins=!ins}return ins}
+  var ak=[[20,392],[52,376],[90,382],[106,408],[100,440],[78,456],[48,460],[28,446],[16,420]];
+  var map=document.getElementById('map'),g=document.createElementNS(NS,'g');g.id='mapG';map.appendChild(g);
+  var step=11,r=4.4,frag=document.createDocumentFragment();
+  for(var y=step/2;y<H;y+=step){for(var x=step/2;x<W;x+=step){if(inside([x,y],poly)||inside([x,y],ak)){var c=document.createElementNS(NS,'circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',r);c.setAttribute('fill','#cdb2aa');frag.appendChild(c)}}}
+  g.appendChild(frag);
+
+  var pinG=document.createElementNS(NS,'g');g.appendChild(pinG);
+  shelters.forEach(function(s){
+    var p=proj(s.lon,s.lat);s.x=p[0];s.y=p[1];
+    var pg=document.createElementNS(NS,'g');pg.setAttribute('class','pin');pg.setAttribute('tabindex','0');pg.setAttribute('role','button');pg.setAttribute('aria-label',s.name+', '+s.state);
+    pg.setAttribute('transform','translate('+p[0]+','+p[1]+')');
+    pg.innerHTML='<path class="body" d="M0 0c-2-9-14-16-14-27a14 14 0 0 1 28 0C14-16 2-9 0 0z" fill="#2d4a5b"/>'+
+      '<path d="M0-21s-6-3.7-6-7.6a3.2 3.2 0 0 1 6-1.4 3.2 3.2 0 0 1 6 1.4C6-24.7 0-21 0-21z" fill="#fff"/>'+
+      '<g class="tag"><rect x="-44" y="8" width="88" height="24" rx="12" fill="#fff"/><text x="0" y="25" text-anchor="middle" font-family="Baloo 2" font-size="15" fill="#2d4a5b">'+s.name+'</text></g>';
+    pg.addEventListener('click',function(){select(s)});
+    pg.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();select(s)}});
+    s.el=pg;pinG.appendChild(pg);
+  });
+
+  var zoom=1,mc=document.getElementById('mapcard'),tip=document.getElementById('tip'),cur=null;
+  function placeTip(){if(!cur)return;var mr=map.getBoundingClientRect(),cr=mc.getBoundingClientRect();
+    var vb=Math.min(mr.width/W,mr.height/H),ox=(mr.width-W*vb)/2,oy=(mr.height-H*vb)/2;
+    var cx=W/2,cy=H/2,px=(cur.x-cx)*zoom+cx,py=(cur.y-cy)*zoom+cy;
+    var left=mr.left-cr.left+ox+px*vb+22,top=mr.top-cr.top+oy+py*vb-110;if(top<84)top=mr.top-cr.top+oy+py*vb+36;
+    var tw=tip.offsetWidth;if(left+tw>cr.width-12)left=mr.left-cr.left+ox+px*vb-tw-22;
+    if(cr.width<480){left=12;top=cr.height-tip.offsetHeight-12}
+    tip.style.left=Math.max(10,left)+'px';tip.style.top=Math.max(10,top)+'px'}
+  function select(s){cur=s;shelters.forEach(function(o){o.el.classList.toggle('on',o===s)});pinG.appendChild(s.el);
+    document.getElementById('tipName').textContent=s.name;document.getElementById('tipPets').textContent=s.pets;document.getElementById('tipRate').textContent=s.rate;
+    document.getElementById('stateLbl').textContent=s.state;placeTip();tip.style.opacity=1}
+  function applyZoom(){map.style.transform='scale('+zoom+')';setTimeout(placeTip,520)}
+  document.getElementById('zin').onclick=function(){zoom=Math.min(2,zoom+.25);applyZoom()};
+  document.getElementById('zout').onclick=function(){zoom=Math.max(1,zoom-.25);applyZoom()};
+  addEventListener('resize',placeTip);
+
+  var sel=document.getElementById('stateSel'),selBtn=sel.querySelector('button'),ul=sel.querySelector('ul');
+  shelters.slice().sort(function(a,b){return a.state.localeCompare(b.state)}).forEach(function(s){var li=document.createElement('li');li.innerHTML='<button role="option">'+s.state+'</button>';li.firstChild.onclick=function(){select(s);sel.classList.remove('open');selBtn.setAttribute('aria-expanded','false')};ul.appendChild(li)});
+  selBtn.onclick=function(e){e.stopPropagation();var o=sel.classList.toggle('open');selBtn.setAttribute('aria-expanded',o)};
+  document.addEventListener('click',function(){sel.classList.remove('open');selBtn.setAttribute('aria-expanded','false')});
+
+  /* ---------- Shelter capacity ---------- */
+  var capList=document.getElementById('capList');
+  shelters.forEach(function(s){var d=document.createElement('div');d.className='cap';
+    d.innerHTML='<span class="dot" style="background:'+s.color+'"></span><div><b>'+s.name+'</b><small><span><svg width="14" height="14" style="display:inline;vertical-align:-2px"><use href="#i-pin"/></svg> '+s.city+', '+s.state+'</span><span><svg width="14" height="14" style="display:inline;vertical-align:-2px"><use href="#i-clock"/></svg> 20 min</span></small></div><div class="bar"><i data-w="'+Math.round(s.pets/s.cap*100)+'"></i></div><span class="n">'+s.pets+' pets</span>';
+    capList.appendChild(d)});
+
+  /* ---------- Adoption ring ---------- */
+  var ringSel=document.getElementById('ringShelter');
+  shelters.forEach(function(s){var o=document.createElement('option');o.value=s.id;o.textContent=s.name;ringSel.appendChild(o)});
+  var A=document.getElementById('arcA'),B=document.getElementById('arcB'),CA=2*Math.PI*128,CB=2*Math.PI*110;
+  A.style.strokeDasharray=CA;B.style.strokeDasharray=CB;A.style.strokeDashoffset=CA;B.style.strokeDashoffset=CB;
+  function dotAt(el,rad,startDeg,frac){var a=(startDeg+frac*360)*Math.PI/180;el.setAttribute('cx',140+rad*Math.cos(a));el.setAttribute('cy',140+rad*Math.sin(a))}
+  function setRing(idx,adopted){
+    var fa=adopted/100,fb=idx/100*0.75;
+    A.style.strokeDashoffset=CA*(1-fa);B.style.strokeDashoffset=CB*(1-fb);
+    var start=performance.now();
+    (function anim(t){var k=Math.min(1,(t-start)/1300);k=1-Math.pow(1-k,3);dotAt(document.getElementById('dotA'),128,-60,0);dotAt(document.getElementById('dotB'),110,-80,fb*k);if(k<1)requestAnimationFrame(anim)})(start);
+    document.getElementById('ringPct').textContent=idx+'%';document.getElementById('lgA').textContent=adopted+'%';document.getElementById('lgB').textContent=(100-adopted)+'%';
+  }
+  ringSel.onchange=function(){var s=shelters.find(function(x){return x.id===ringSel.value});setRing(s?s.ring[0]:82,s?s.ring[1]:58)};
+  document.getElementById('ringLoc').onchange=function(){var m={West:[79,55],Midwest:[84,60],East:[73,49],Location:[82,58]}[this.value];ringSel.value='all';setRing(m[0],m[1])};
+
+  /* ---------- Pets adoption ---------- */
+  var data={y:{dog:511,cat:487,bird:379,growth:'27.6%',vs:'vs 2024',bars:[95,68,178,78,128]},m:{dog:46,cat:41,bird:28,growth:'8.1%',vs:'vs last month',bars:[60,110,82,140,124]}};
+  function count(el,to){var from=parseInt(el.textContent.replace(/,/g,''))||0,t0=performance.now();if(reduce){el.textContent=to.toLocaleString();return}
+    (function f(t){var k=Math.min(1,(t-t0)/900);k=1-Math.pow(1-k,3);el.textContent=Math.round(from+(to-from)*k).toLocaleString();if(k<1)requestAnimationFrame(f)})(t0)}
+  var bars=document.querySelectorAll('#bars i');
+  function setPeriod(p){var d=data[p];document.querySelectorAll('#period button').forEach(function(b){b.classList.toggle('on',b.dataset.p===p)});
+    count(document.getElementById('nDog'),d.dog);count(document.getElementById('nCat'),d.cat);count(document.getElementById('nBird'),d.bird);count(document.getElementById('total'),d.dog+d.cat+d.bird);
+    document.getElementById('growth').textContent=d.growth;document.getElementById('vs').textContent=d.vs;
+    var max=Math.max.apply(null,d.bars);bars.forEach(function(b,i){b.style.height=(d.bars[i]/max*100)+'%'})}
+  document.querySelectorAll('#period button').forEach(function(b){b.onclick=function(){setPeriod(b.dataset.p)}});
+
+  /* ---------- Pets grid ---------- */
+  var pets=[
+    {n:'Biscuit',img:'assets/pets/biscuit.jpg',pos:'50% 40%',t:'dog',b:'Golden mix',a:'2 yrs',s:'Paw Haven',tags:['Vaccinated','Good with kids'],bg:'#fbf3a8',badge:'New'},
+    {n:'Miso',img:'assets/pets/miso.jpg',pos:'50% 40%',t:'cat',b:'Tabby',a:'6 yrs',s:'Kindered',tags:['Calm','Indoor'],bg:'#ffd9c4'},
+    {n:'Kiwi',img:'assets/pets/kiwi.jpg',pos:'62% 35%',t:'bird',b:'Budgie',a:'1 yr',s:'Lovables',tags:['Sings','Hand tame'],bg:'#e7efa6'},
+    {n:'Pepper',img:'assets/pets/pepper.jpg',pos:'62% 45%',t:'rabbit',b:'Dutch rabbit',a:'2 yrs',s:'Happy Tails',tags:['Litter trained'],bg:'#ece3fb'},
+    {n:'Rocky',img:'assets/pets/rocky.jpg',pos:'45% 35%',t:'dog',b:'Boxer mix',a:'4 yrs',s:'Happy Tails',tags:['Vaccinated','Loves walks'],bg:'#fff1b3'},
+    {n:'Luna',img:'assets/pets/luna.jpg',pos:'55% 55%',t:'cat',b:'Black shorthair',a:'1 yr',s:'Paw Haven',tags:['Playful','Vaccinated'],bg:'#ffc6a8',badge:'Urgent'},
+    {n:'Daisy',img:'assets/pets/daisy.jpg',pos:'50% 35%',t:'dog',b:'Beagle',a:'8 mos',s:'Lovables',tags:['Puppy','Good with cats'],bg:'#fbf3a8'},
+    {n:'Sunny',img:'assets/pets/sunny.jpg',pos:'35% 30%',t:'bird',b:'Cockatiel',a:'3 yrs',s:'Kindered',tags:['Friendly','Talks'],bg:'#dfe88f'}
+  ];
+  var grid=document.getElementById('petGrid');
+  pets.forEach(function(p){var c=document.createElement('article');c.className='card pet reveal';c.dataset.t=p.t;
+    c.innerHTML='<div class="art" role="img" aria-label="Photo of '+p.n+'" style="background-color:'+p.bg+';background-image:url('+p.img+');background-position:'+p.pos+'">'+(p.badge?'<span class="badge" style="color:'+(p.badge==='Urgent'?'#c2453f':'#3f8a5f')+'">'+p.badge+'</span>':'')+
+      '<button class="heart" aria-label="Save '+p.n+'" aria-pressed="false"><svg width="22" height="22" fill="none" style="color:#2d4a5b"><use href="#i-heart"/></svg></button>'+
+      '</div>'+
+      '<h3>'+p.n+'</h3><p class="meta">'+p.b+' &middot; '+p.a+'</p><div class="tags">'+p.tags.map(function(t){return'<span>'+t+'</span>'}).join('')+'</div>'+
+      '<div class="foot"><small><svg width="16" height="16"><use href="#i-pin"/></svg>'+p.s+'</small><button class="meet">Meet '+p.n+'</button></div>';
+    grid.appendChild(c)});
+  grid.addEventListener('click',function(e){var h=e.target.closest('.heart');if(h){var on=h.classList.toggle('on');h.setAttribute('aria-pressed',on)}
+    var m=e.target.closest('.meet');if(m){var orig=m.textContent;m.textContent='Request sent!';setTimeout(function(){m.textContent=orig},1800)}});
+  document.querySelectorAll('#filters .chip').forEach(function(ch){ch.onclick=function(){document.querySelectorAll('#filters .chip').forEach(function(x){x.classList.toggle('on',x===ch)});
+    var f=ch.dataset.f;grid.querySelectorAll('.pet').forEach(function(p){p.classList.toggle('hide',f!=='all'&&p.dataset.t!==f)})}});
+
+  /* ---------- Stars ---------- */
+  document.querySelectorAll('.stars').forEach(function(s){for(var i=0;i<5;i++)s.insertAdjacentHTML('beforeend','<svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2l3 6.6 7 .8-5.2 4.8 1.5 7L12 17.6 5.7 21.2l1.5-7L2 9.4l7-.8z" fill="#f39a3d"/></svg>')});
+
+  /* ---------- Donations ---------- */
+  var amt=25,freq='once',amts=document.querySelectorAll('#amts button'),custom=document.getElementById('customAmt'),btn=document.getElementById('donateBtn'),what=document.getElementById('whatTxt');
+  function impactText(a){if(a>=100)return'$'+a+' could cover a full vet check and vaccines for one pet.';if(a>=50)return'$'+a+' could buy a warm bed and blanket for a new arrival.';if(a>=25)return'$'+a+' could feed a shelter dog for a week.';return'$'+a+' could buy toys and treats for a whole kennel.'}
+  function upd(){btn.textContent='Donate $'+amt+(freq==='monthly'?' monthly':'');what.textContent=impactText(amt)+(freq==='monthly'?' Every month.':'')}
+  amts.forEach(function(b){b.onclick=function(){amts.forEach(function(x){x.classList.toggle('on',x===b)});custom.value='';amt=+b.dataset.a;upd()}});
+  custom.oninput=function(){var v=Math.round(+custom.value);if(v>0){amt=v;amts.forEach(function(x){x.classList.remove('on')})}upd()};
+  document.querySelectorAll('#freq button').forEach(function(b){b.onclick=function(){document.querySelectorAll('#freq button').forEach(function(x){x.classList.toggle('on',x===b)});freq=b.dataset.f;upd()}});
+  btn.onclick=function(){document.getElementById('donNote').textContent='Thank you! This is a demo, so no payment was taken.'};
+
+  document.getElementById('newsForm').addEventListener('submit',function(e){e.preventDefault();var v=this.querySelector('input').value.trim();document.getElementById('newsNote').textContent=/^\S+@\S+\.\S+$/.test(v)?'Thanks! You are on the list (demo).':'Please enter a valid email.'});
+
+  /* ---------- Shelters grid ---------- */
+  var pinSvg='<svg width="15" height="15"><use href="#i-pin"/></svg>';
+  var sg=document.getElementById('shelterGrid');
+  shelters.forEach(function(s){var c=document.createElement('article');c.className='card scard reveal';
+    c.innerHTML='<div class="main" role="img" aria-label="Photo of '+s.name+'" style="background-image:url('+s.imgs[0]+')"><span class="spec">'+s.spec+'</span></div>'+
+      '<div class="thumbs">'+s.imgs.map(function(u,i){return '<button class="'+(i?'':'on')+'" data-u="'+u+'" aria-label="Show photo '+(i+1)+' of '+s.name+'" style="background-image:url('+u+')"></button>'}).join('')+'</div>'+
+      '<h3>'+s.name+'</h3><p class="loc">'+pinSvg+s.city+', '+s.state+'</p>'+
+      '<div class="facts"><span><b>'+s.pets+'</b>pets</span><span><b>'+s.rate+'</b>rating</span><span><b>'+(s.cap-s.pets)+'</b>spaces left</span></div>'+
+      '<button class="view">View shelter</button>';
+    c.querySelectorAll('.thumbs button').forEach(function(b){b.onclick=function(){c.querySelector('.main').style.backgroundImage='url('+b.dataset.u+')';c.querySelectorAll('.thumbs button').forEach(function(x){x.classList.toggle('on',x===b)})}});
+    c.querySelector('.view').onclick=function(){openDetail(s)};
+    sg.appendChild(c)});
+
+  /* ---------- Modal ---------- */
+  var modal=document.getElementById('modal'),mbody=document.getElementById('mbody'),lastFocus=null;
+  function openModal(html){lastFocus=document.activeElement;mbody.innerHTML=html;modal.classList.add('open');document.body.classList.add('lock');document.getElementById('mbox').scrollTop=0;setTimeout(function(){document.getElementById('mclose').focus()},50)}
+  function closeModal(){modal.classList.remove('open');document.body.classList.remove('lock');if(lastFocus)lastFocus.focus()}
+  document.getElementById('mclose').onclick=closeModal;
+  modal.addEventListener('click',function(e){if(e.target===modal)closeModal()});
+  document.addEventListener('keydown',function(e){if(!modal.classList.contains('open'))return;if(e.key==='Escape')closeModal();
+    if(e.key==='Tab'){var f=modal.querySelectorAll('button,a,input,select');var a=f[0],z=f[f.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}});
+  function openList(){
+    var total=shelters.reduce(function(t,s){return t+s.pets},0);
+    openModal('<h2 id="mTitle">All shelters</h2><p class="msub">'+shelters.length+' shelters caring for '+total+' pets right now.</p>'+
+      shelters.map(function(s){var pct=Math.round(s.pets/s.cap*100);return '<div class="mrow"><div class="ph" style="background-image:url('+s.imgs[0]+')"></div>'+
+        '<div><h3>'+s.name+'</h3><p class="loc"><span>'+pinSvg+s.city+', '+s.state+'</span><span>'+s.spec+'</span><span>'+s.hours+'</span></p>'+
+        '<div class="bar"><i style="width:'+pct+'%"></i></div><small>'+s.pets+' of '+s.cap+' spaces filled</small></div>'+
+        '<div class="side"><b>&#9733; '+s.rate+'</b><button class="mbtn" data-id="'+s.id+'">View shelter</button></div></div>'}).join(''));
+    mbody.querySelectorAll('.mbtn').forEach(function(b){b.onclick=function(){openDetail(shelters.find(function(s){return s.id===b.dataset.id}),true)}});
+  }
+  function openDetail(s,fromList){
+    openModal('<h2 id="mTitle">'+s.name+'</h2><p class="msub">'+s.spec+' &middot; '+s.city+', '+s.state+'</p>'+
+      '<div class="dmain" id="dmain" style="background-image:url('+s.imgs[0]+')"></div>'+
+      '<div class="dthumbs">'+s.imgs.map(function(u,i){return '<button class="'+(i?'':'on')+'" data-u="'+u+'" aria-label="Show photo '+(i+1)+'" style="background-image:url('+u+')"></button>'}).join('')+'</div>'+
+      '<p class="dabout">'+s.about+'</p>'+
+      '<div class="dfacts"><div><b>'+s.pets+'</b>pets in care</div><div><b>'+(s.cap-s.pets)+'</b>spaces left</div><div><b>&#9733; '+s.rate+'</b>rating</div><div><b>'+s.hours+'</b>opening hours</div><div><b>'+s.phone+'</b>phone</div><div><b>'+s.addr+'</b>address</div></div>'+
+      '<div class="dact"><button class="mbtn" id="bookBtn">Book a visit</button>'+(fromList?'<button class="mbtn light" id="backBtn">Back to all shelters</button>':'<button class="mbtn light" id="backBtn">See all shelters</button>')+'</div><p class="mnote" id="mnote" role="status"></p>');
+    mbody.querySelectorAll('.dthumbs button').forEach(function(b){b.onclick=function(){document.getElementById('dmain').style.backgroundImage='url('+b.dataset.u+')';mbody.querySelectorAll('.dthumbs button').forEach(function(x){x.classList.toggle('on',x===b)})}});
+    document.getElementById('bookBtn').onclick=function(){document.getElementById('mnote').textContent='Visit request sent to '+s.name+' (demo).'};
+    document.getElementById('backBtn').onclick=openList;
+  }
+  document.getElementById('seeAll').onclick=openList;
+
+  /* ---------- FAQ ---------- */
+  document.querySelectorAll('#faqList .fq button').forEach(function(b){b.onclick=function(){var o=b.parentNode.classList.toggle('open');b.setAttribute('aria-expanded',o)}});
+
+  /* ---------- Menu ---------- */
+  var hdr=document.querySelector('header'),bg=document.getElementById('burger');
+  bg.onclick=function(){var o=hdr.classList.toggle('open');bg.setAttribute('aria-expanded',o)};
+  document.querySelectorAll('#menu a').forEach(function(a){a.addEventListener('click',function(){hdr.classList.remove('open');bg.setAttribute('aria-expanded','false')})});
+
+  /* ---------- Reveal and first animations ---------- */
+  var started={};
+  function onShow(el){el.classList.add('in');
+    if(!started.stats&&el.closest('.stats')){started.stats=1;setTimeout(function(){document.querySelectorAll('.bar i').forEach(function(i){i.style.width=i.dataset.w+'%'});setRing(82,58);setPeriod('y')},150)}
+    if(!started.don&&el.closest('#donate')){started.don=1;document.getElementById('progBar').style.width='73.7%';var r=document.getElementById('raised'),t0=performance.now();(function f(t){var k=Math.min(1,(t-t0)/900);k=1-Math.pow(1-k,3);r.textContent='$'+Math.round(18420*k).toLocaleString();if(k<1)requestAnimationFrame(f)})(t0)}}
+  if('IntersectionObserver' in window&&!reduce){var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){onShow(en.target);io.unobserve(en.target)}})},{threshold:.12});document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)})}
+  else document.querySelectorAll('.reveal').forEach(onShow);
+
+  bars.forEach(function(b){b.style.height='4%'});
+  setTimeout(function(){select(shelters[1])},300);
+})();
+</script>
+</body>
+</html>
